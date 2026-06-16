@@ -7,25 +7,25 @@ require('dotenv').config();
 const authRoutes = require('./routes/auth');
 const complaintRoutes = require('./routes/complaints');
 const billRoutes = require('./routes/bills');
+const tipsRoutes = require('./routes/tips');
+const analyzeRoutes = require('./routes/analyze');
 
 const app = express();
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/complaints', complaintRoutes);
 app.use('/api/bills', billRoutes);
+app.use('/api/tips', tipsRoutes);
+app.use('/api/analyze', analyzeRoutes);
 
-// Test route
 app.get('/', (req, res) => {
   res.send('Smart Energy App Backend is running! ⚡');
 });
 
-// Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('✅ MongoDB Connected'))
   .catch((err) => console.log('❌ MongoDB Error:', err));
