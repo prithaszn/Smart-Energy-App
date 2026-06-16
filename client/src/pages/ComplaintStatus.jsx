@@ -8,7 +8,7 @@ function ComplaintStatus() {
   const token = localStorage.getItem('token')
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/complaints/my', { headers: { Authorization: `Bearer ${token}` } })
+    axios.get('https://smart-energy-app-production.up.railway.app/api/complaints/my', { headers: { Authorization: `Bearer ${token}` } })
       .then(res => { setComplaints(res.data); setLoading(false) })
       .catch(() => setLoading(false))
   }, [])

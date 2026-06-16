@@ -13,7 +13,7 @@ function ComplaintForm() {
     if (!form.description.trim()) return setMessage('⚠️ Please describe your complaint')
     setLoading(true)
     try {
-      await axios.post('http://localhost:5000/api/complaints', form, { headers: { Authorization: `Bearer ${token}` } })
+      await axios.post('https://smart-energy-app-production.up.railway.app/api/complaints', form, { headers: { Authorization: `Bearer ${token}` } })
       setMessage('✅ Complaint filed! Redirecting...')
       setTimeout(() => navigate('/my-complaints'), 1500)
     } catch {

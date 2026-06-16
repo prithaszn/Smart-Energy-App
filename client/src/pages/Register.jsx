@@ -9,7 +9,7 @@ function Register() {
 
   const handleSubmit = async () => {
     try {
-      await axios.post('http://localhost:5000/api/auth/register', form)
+      await axios.post('https://smart-energy-app-production.up.railway.app/api/auth/register', form)
       navigate('/login')
     } catch {
       setError('Registration failed. Email may already exist.')

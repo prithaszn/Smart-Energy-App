@@ -19,7 +19,7 @@ function Dashboard() {
 
   const fetchBills = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/bills/my', { headers: { Authorization: `Bearer ${token}` } })
+      const res = await axios.get('https://smart-energy-app-production.up.railway.app/api/bills/my', { headers: { Authorization: `Bearer ${token}` } })
       setBills(res.data)
     } catch {}
   }
@@ -36,7 +36,7 @@ function Dashboard() {
     formData.append('unitsConsumed', form.unitsConsumed)
     formData.append('amountDue', form.amountDue)
     try {
-      await axios.post('http://localhost:5000/api/bills/upload', formData, { headers: { Authorization: `Bearer ${token}` } })
+      await axios.post('https://smart-energy-app-production.up.railway.app/api/bills/upload', formData, { headers: { Authorization: `Bearer ${token}` } })
       setMessage('✅ Bill uploaded successfully')
       setFile(null)
       fetchBills()
@@ -51,7 +51,7 @@ function Dashboard() {
     setShowTips(true)
     setTips([])
     try {
-      const res = await axios.post('http://localhost:5000/api/tips', {
+      const res = await axios.post('https://smart-energy-app-production.up.railway.app/api/tips', {
         totalUnits: bills.reduce((a, b) => a + b.unitsConsumed, 0),
         totalAmount: bills.reduce((a, b) => a + b.amountDue, 0),
         billCount: bills.length,
@@ -66,7 +66,7 @@ function Dashboard() {
   const handleAnalyze = async (bill) => {
     setAnalyzingId(bill._id)
     try {
-      const res = await axios.post(`http://localhost:5000/api/analyze/${bill._id}`, {
+      const res = await axios.post(`https://smart-energy-app-production.up.railway.app/api/analyze/${bill._id}`, {
         filePath: bill.filePath,
         unitsConsumed: bill.unitsConsumed,
         amountDue: bill.amountDue,
