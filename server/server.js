@@ -12,7 +12,13 @@ const analyzeRoutes = require('./routes/analyze');
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: [
+    'https://smart-energy-app-puce.vercel.app',
+    'http://localhost:5173'
+  ],
+  credentials: true
+}))
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
