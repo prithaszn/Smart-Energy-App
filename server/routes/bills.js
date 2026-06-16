@@ -5,25 +5,14 @@ const path = require('path');
 const Bill = require('../models/Bill');
 const authMiddleware = require('../middleware/authMiddleware');
 
-// Multer storage config
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/');
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + '-' + file.originalname);
-  }
-});
+// Use memory storage instead of disk (Railway has no persistent disk)
+const storage = multer.memoryStorage();
 
-// Only allow PDF and images
 const fileFilter = (req, file, cb) => {
   const allowedTypes = /jpeg|jpg|png|pdf/;
   const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
-  if (extname) {
-    cb(null, true);
-  } else {
-    cb(new Error('Only PDF, JPG, PNG files allowed!'));
-  }
+  if (extname) cb(null, true);
+  else cb(new Error('Only PDF, JPG, PNG files allowed!'));
 };
 
 const upload = multer({ storage, fileFilter });
@@ -36,7 +25,7 @@ router.post('/upload', authMiddleware, upload.single('bill'), async (req, res) =
     const bill = new Bill({
       user: req.user.userId,
       fileName: req.file.originalname,
-      filePath: req.file.path,
+      filePath: `uploads/${Date.now()}-${req.file.originalname}`, // just a label now
       month,
       year,
       unitsConsumed,
@@ -64,9 +53,7 @@ router.get('/my', authMiddleware, async (req, res) => {
 router.delete('/:id', authMiddleware, async (req, res) => {
   try {
     const bill = await Bill.findOne({ _id: req.params.id, user: req.user.userId });
-    if (!bill) {
-      return res.status(404).json({ message: 'Bill not found' });
-    }
+    if (!bill) return res.status(404).json({ message: 'Bill not found' });
     await Bill.findByIdAndDelete(req.params.id);
     res.json({ message: 'Bill deleted!' });
   } catch (err) {
