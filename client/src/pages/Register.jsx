@@ -17,15 +17,15 @@ function Register() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 24px' }}>
-      <div style={{ position: 'fixed', top: 28, left: 36, display: 'flex', alignItems: 'center', gap: 10, zIndex: 20 }}>
-        <div style={{ width: 36, height: 36, borderRadius: 10, background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>⚡</div>
-        <span style={{ fontSize: 17, fontWeight: 700, color: '#fff' }}>Smart Energy</span>
+    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '80px 20px 40px' }}>
+      <div style={{ position: 'fixed', top: 20, left: 20, display: 'flex', alignItems: 'center', gap: 10, zIndex: 20 }}>
+        <div style={{ width: 34, height: 34, borderRadius: 10, background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16 }}>⚡</div>
+        <span style={{ fontSize: 15, fontWeight: 700, color: '#fff' }}>Smart Energy</span>
       </div>
 
-      <div className="glass-strong fade-in" style={{ width: '100%', maxWidth: 420, padding: '48px 40px' }}>
-        <h1 style={{ fontSize: 28, fontWeight: 800, color: '#fff', letterSpacing: '-0.6px', marginBottom: 6 }}>Create account</h1>
-        <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.38)', marginBottom: 32 }}>Start managing your energy today</p>
+      <div className="glass-strong fade-in" style={{ width: '100%', maxWidth: 420, padding: 'clamp(24px, 6vw, 48px) clamp(20px, 6vw, 40px)' }}>
+        <h1 style={{ fontSize: 26, fontWeight: 800, color: '#fff', letterSpacing: '-0.6px', marginBottom: 6 }}>Create account</h1>
+        <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.38)', marginBottom: 28 }}>Start managing your energy today</p>
 
         {error && (
           <div style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.15)', borderRadius: 10, padding: '11px 15px', marginBottom: 18, fontSize: 13, color: '#fca5a5' }}>{error}</div>
@@ -51,9 +51,9 @@ function Register() {
           </div>
         </div>
 
-        <button className="btn-primary" onClick={handleSubmit} style={{ marginTop: 28 }}>Create account</button>
+        <button className="btn-primary" onClick={handleSubmit} style={{ marginTop: 26 }}>Create account</button>
 
-        <p style={{ textAlign: 'center', marginTop: 22, fontSize: 13, color: 'rgba(255,255,255,0.28)' }}>
+        <p style={{ textAlign: 'center', marginTop: 20, fontSize: 13, color: 'rgba(255,255,255,0.28)' }}>
           Already have an account?{' '}
           <Link to="/login" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none', fontWeight: 600 }}>Sign in</Link>
         </p>

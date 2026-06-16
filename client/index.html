@@ -5,6 +5,16 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>client</title>
+
+    <!-- ✅ CSS moved inside <head> within a <style> tag -->
+    <style>
+      @media (max-width: 600px) {
+        .bw-nav { padding: 14px 16px !important; flex-wrap: wrap; gap: 10px; }
+        .bw-nav div:last-child { gap: 6px !important; }
+        .btn-secondary { padding: 7px 10px !important; font-size: 11px !important; }
+      }
+    </style>
+
   </head>
   <body>
     <div id="root"></div>
