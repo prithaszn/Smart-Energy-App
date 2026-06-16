@@ -10,7 +10,15 @@ function Register() {
   const handleSubmit = async () => {
     try {
       await axios.post('https://smart-energy-app-production.up.railway.app/api/auth/register', form)
-      navigate('/login')
+      // Auto login after register
+      const res = await axios.post('https://smart-energy-app-production.up.railway.app/api/auth/login', {
+        email: form.email,
+        password: form.password
+      })
+      localStorage.setItem('token', res.data.token)
+      localStorage.setItem('user', JSON.stringify(res.data.user))
+      if (res.data.user.role === 'admin') navigate('/admin')
+      else navigate('/dashboard')
     } catch {
       setError('Registration failed. Email may already exist.')
     }
