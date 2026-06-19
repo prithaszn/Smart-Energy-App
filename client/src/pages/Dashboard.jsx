@@ -106,7 +106,7 @@ function Dashboard() {
           <h1 style={{ fontSize: 'clamp(24px, 6vw, 36px)', fontWeight: 800, color: '#fff', letterSpacing: '-0.8px' }}>{user?.name} 👋</h1>
         </div>
 
-        {/* Stats — 1 col on mobile, 3 on desktop */}
+        {/* Stats */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 12, marginBottom: 20 }}>
           {[
             { label: 'Total Bills', value: bills.length, unit: '', icon: '📄' },
@@ -123,8 +123,9 @@ function Dashboard() {
           ))}
         </div>
 
-        {/* Upload + Bills — stack on mobile */}
+        {/* Upload + Bills */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16, marginBottom: 16 }}>
+
           {/* Upload */}
           <div className="glass" style={{ padding: 'clamp(18px, 4vw, 28px)' }}>
             <h2 style={{ fontSize: 15, fontWeight: 700, color: '#fff', marginBottom: 4 }}>Upload New Bill</h2>
@@ -179,19 +180,51 @@ function Dashboard() {
                       </div>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                         <p style={{ fontSize: 15, fontWeight: 700, color: '#fff' }}>₹{bill.amountDue}</p>
-                        <button onClick={() => handleAnalyze(bill)} disabled={analyzingId === bill._id}
+                        <button
+                          onClick={() => handleAnalyze(bill)}
+                          disabled={analyzingId === bill._id}
                           style={{ padding: '6px 12px', borderRadius: 8, background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.7)', border: '1px solid rgba(255,255,255,0.15)', fontSize: 11, fontWeight: 600, cursor: 'pointer', fontFamily: 'Inter, sans-serif', whiteSpace: 'nowrap' }}>
                           {analyzingId === bill._id ? '🔍 Scanning...' : '🔍 Scan'}
                         </button>
                       </div>
                     </div>
 
+                    {/* Analysis Result */}
                     {billAnalyses[bill._id] && (
-                      <div className="fade-in" style={{ marginTop: 12, background: billAnalyses[bill._id].status === 'ok' ? 'rgba(134,239,172,0.07)' : 'rgba(252,165,165,0.07)', border: `1px solid ${billAnalyses[bill._id].status === 'ok' ? 'rgba(134,239,172,0.2)' : 'rgba(252,165,165,0.2)'}`, borderRadius: 10, padding: '12px 14px' }}>
-                        <p style={{ fontSize: 12, fontWeight: 700, color: billAnalyses[bill._id].status === 'ok' ? '#86efac' : '#fca5a5', marginBottom: 5 }}>
-                          {billAnalyses[bill._id].status === 'ok' ? '✅ Bill looks fine' : '⚠️ Potential issue detected'}
+                      <div className="fade-in" style={{
+                        marginTop: 12,
+                        background: billAnalyses[bill._id].status === 'ok'
+                          ? 'rgba(134,239,172,0.07)'
+                          : billAnalyses[bill._id].status === 'invalid'
+                          ? 'rgba(251,191,36,0.07)'
+                          : 'rgba(252,165,165,0.07)',
+                        border: `1px solid ${
+                          billAnalyses[bill._id].status === 'ok'
+                            ? 'rgba(134,239,172,0.2)'
+                            : billAnalyses[bill._id].status === 'invalid'
+                            ? 'rgba(251,191,36,0.25)'
+                            : 'rgba(252,165,165,0.2)'
+                        }`,
+                        borderRadius: 10,
+                        padding: '12px 14px'
+                      }}>
+                        <p style={{
+                          fontSize: 12, fontWeight: 700, marginBottom: 5,
+                          color: billAnalyses[bill._id].status === 'ok'
+                            ? '#86efac'
+                            : billAnalyses[bill._id].status === 'invalid'
+                            ? '#fde68a'
+                            : '#fca5a5'
+                        }}>
+                          {billAnalyses[bill._id].status === 'ok'
+                            ? '✅ Bill looks correct'
+                            : billAnalyses[bill._id].status === 'invalid'
+                            ? '⚠️ Invalid bill — please upload an electricity bill'
+                            : '🚨 Potential issue detected'}
                         </p>
-                        <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.65)', lineHeight: 1.6 }}>{billAnalyses[bill._id].summary}</p>
+                        <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.65)', lineHeight: 1.6 }}>
+                          {billAnalyses[bill._id].summary}
+                        </p>
                         {billAnalyses[bill._id].issues?.length > 0 && (
                           <ul style={{ paddingLeft: 16, marginTop: 6 }}>
                             {billAnalyses[bill._id].issues.map((issue, i) => (
@@ -199,7 +232,11 @@ function Dashboard() {
                             ))}
                           </ul>
                         )}
-                        <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', fontStyle: 'italic', marginTop: 6 }}>💡 {billAnalyses[bill._id].recommendation}</p>
+                        {billAnalyses[bill._id].status !== 'invalid' && (
+                          <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', fontStyle: 'italic', marginTop: 6 }}>
+                            💡 {billAnalyses[bill._id].recommendation}
+                          </p>
+                        )}
                       </div>
                     )}
                   </div>
@@ -218,7 +255,9 @@ function Dashboard() {
                 {bills.length === 0 ? 'Upload at least one bill to get tips' : 'Personalized tips based on your usage'}
               </p>
             </div>
-            <button onClick={handleGetTips} disabled={bills.length === 0 || tipsLoading}
+            <button
+              onClick={handleGetTips}
+              disabled={bills.length === 0 || tipsLoading}
               style={{ padding: '10px 20px', borderRadius: 12, background: bills.length === 0 ? 'rgba(255,255,255,0.05)' : '#fff', color: bills.length === 0 ? 'rgba(255,255,255,0.25)' : '#0a0a0a', border: 'none', fontSize: 13, fontWeight: 700, cursor: bills.length === 0 ? 'not-allowed' : 'pointer', fontFamily: 'Inter, sans-serif', whiteSpace: 'nowrap' }}>
               {tipsLoading ? '✨ Thinking...' : '✨ Get Tips'}
             </button>
