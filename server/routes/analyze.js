@@ -16,7 +16,7 @@ router.post('/:billId', authMiddleware, async (req, res) => {
       return res.status(400).json({ message: 'No file path provided' });
     }
 
-    const cleanPath = filePath.replace(/\\/g, '/');
+    const cleanPath = filePath.replace(/\\/g, '/').replace('/uploaded/', '/uploads/');
     const fullPath = path.join(__dirname, '..', cleanPath);
 
     console.log('Looking for file at:', fullPath);
